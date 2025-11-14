@@ -1,1 +1,1 @@
-# koreanchess
+# koreanchess Janggi
