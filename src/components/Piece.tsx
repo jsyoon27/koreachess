@@ -13,16 +13,16 @@ interface PieceProps {
 
 const pieceSymbols = {
   red: {
-    king: '帥',
-    advisor: '仕',
-    elephant: '相',
-    horse: '傌',
-    rook: '俥',
-    cannon: '炮',
+    king: '漢',
+    advisor: '士',
+    elephant: '象',
+    horse: '馬',
+    rook: '車',
+    cannon: '包',
     pawn: '兵'
   },
   green: {
-    king: '將',
+    king: '楚',
     advisor: '士',
     elephant: '象',
     horse: '馬',
