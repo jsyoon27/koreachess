@@ -21,10 +21,10 @@
   border-color: #d32f2f;
 }
 
-.piece.blue {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  border-color: #1976d2;
+.piece.green {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+  border-color: #2e7d32;
 }
 
 .piece:hover {

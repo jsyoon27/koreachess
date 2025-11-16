@@ -3,7 +3,7 @@ import React from 'react';
 import './Piece.css';
 
 export type PieceType = 'king' | 'advisor' | 'elephant' | 'horse' | 'rook' | 'cannon' | 'pawn';
-export type Player = 'red' | 'blue';
+export type Player = 'red' | 'green';
 
 interface PieceProps {
   type: PieceType;
@@ -21,7 +21,7 @@ const pieceSymbols = {
     cannon: '炮',
     pawn: '兵'
   },
-  blue: {
+  green: {
     king: '將',
     advisor: '士',
     elephant: '象',
