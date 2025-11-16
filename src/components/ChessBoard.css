@@ -1,0 +1,65 @@
+/* ChessBoard.css */
+.chess-board-wrapper {
+  position: relative;
+  background-color: #f4e4bc;
+  border: 3px solid #8b4513;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  width: fit-content;
+}
+
+.chess-lines {
+  position: relative;
+  z-index: 1;
+}
+
+.chess-lines svg {
+  background-color: transparent;
+}
+
+.chess-board {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 450px;
+  height: 500px;
+  z-index: 2;
+}
+
+.intersection {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.point {
+  width: 6px;
+  height: 6px;
+  background-color: #8b4513;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.intersection:hover .point {
+  width: 10px;
+  height: 10px;
+  background-color: #ff9800;
+}
+
+.intersection.selected .point {
+  width: 12px;
+  height: 12px;
+  background-color: #ffeb3b;
+  box-shadow: 0 0 0 2px #ff9800;
+}
+
+.intersection.possible-move .point {
+  width: 8px;
+  height: 8px;
+  background-color: #4caf50;
+}
