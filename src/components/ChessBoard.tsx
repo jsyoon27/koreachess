@@ -1,11 +1,56 @@
 // src/components/ChessBoard.tsx
-import React from 'react';
+import { useState } from 'react';
 import './ChessBoard.css';
+import Piece, { type PieceType, type Player } from './Piece';
 
 const POINTS_ROWS = 10;
 const POINTS_COLS = 9;
 
+interface PiecePosition {
+  type: PieceType;
+  player: Player;
+}
+
+type BoardState = { [key: string]: PiecePosition };
+
+const initialBoard: BoardState = {
+  '0-0': { type: 'rook', player: 'blue' },
+  '0-1': { type: 'horse', player: 'blue' },
+  '0-2': { type: 'elephant', player: 'blue' },
+  '0-3': { type: 'advisor', player: 'blue' },
+  '1-4': { type: 'king', player: 'blue' },
+  '0-5': { type: 'advisor', player: 'blue' },
+  '0-6': { type: 'elephant', player: 'blue' },
+  '0-7': { type: 'horse', player: 'blue' },
+  '0-8': { type: 'rook', player: 'blue' },
+  '2-1': { type: 'cannon', player: 'blue' },
+  '2-7': { type: 'cannon', player: 'blue' },
+  '3-0': { type: 'pawn', player: 'blue' },
+  '3-2': { type: 'pawn', player: 'blue' },
+  '3-4': { type: 'pawn', player: 'blue' },
+  '3-6': { type: 'pawn', player: 'blue' },
+  '3-8': { type: 'pawn', player: 'blue' },
+
+  '9-0': { type: 'rook', player: 'red' },
+  '9-1': { type: 'horse', player: 'red' },
+  '9-2': { type: 'elephant', player: 'red' },
+  '9-3': { type: 'advisor', player: 'red' },
+  '8-4': { type: 'king', player: 'red' },
+  '9-5': { type: 'advisor', player: 'red' },
+  '9-6': { type: 'elephant', player: 'red' },
+  '9-7': { type: 'horse', player: 'red' },
+  '9-8': { type: 'rook', player: 'red' },
+  '7-1': { type: 'cannon', player: 'red' },
+  '7-7': { type: 'cannon', player: 'red' },
+  '6-0': { type: 'pawn', player: 'red' },
+  '6-2': { type: 'pawn', player: 'red' },
+  '6-4': { type: 'pawn', player: 'red' },
+  '6-6': { type: 'pawn', player: 'red' },
+  '6-8': { type: 'pawn', player: 'red' },
+};
+
 const ChessBoard = () => {
+  const [pieces, setPieces] = useState<BoardState>(initialBoard);
   return (
     <div className="chess-board-wrapper">
       {/* 선을 그리는 레이어 */}
@@ -63,6 +108,13 @@ const ChessBoard = () => {
               }}
             >
               <div className="point"></div>
+              {pieces[`${row}-${col}`] && (
+                <Piece
+                  type={pieces[`${row}-${col}`].type}
+                  player={pieces[`${row}-${col}`].player}
+                  onClick={() => console.log(`Clicked piece at ${row}-${col}`)}
+                />
+              )}
             </div>
           )),
         )}
