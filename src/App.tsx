@@ -11,9 +11,9 @@ function App() {
         <div>Title</div>
         <div>Game Status</div>
         <div>Game Result</div>
-        <div className="flex justify-center items-center min-h-screen bg-green-200">
-          <ChessBoard />
-        </div>
+
+        <ChessBoard />
+
         <div>Description</div>
       </div>
     </>
