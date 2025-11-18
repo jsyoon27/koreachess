@@ -20,3 +20,6 @@ export interface Position {
 
 // null은 빈 칸을 의미합니다.
 export type GameBoard = (Piece | null)[][];
+
+
+

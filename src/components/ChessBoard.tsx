@@ -11,46 +11,54 @@ interface PiecePosition {
   player: Player;
 }
 
-type BoardState = { [key: string]: PiecePosition };
+type BoardState = (PiecePosition | null)[][];
 
-const initialBoard: BoardState = {
-  '0-0': { type: 'rook', player: 'green' },
-  '0-1': { type: 'horse', player: 'green' },
-  '0-2': { type: 'elephant', player: 'green' },
-  '0-3': { type: 'advisor', player: 'green' },
-  '1-4': { type: 'king', player: 'green' },
-  '0-5': { type: 'advisor', player: 'green' },
-  '0-6': { type: 'elephant', player: 'green' },
-  '0-7': { type: 'horse', player: 'green' },
-  '0-8': { type: 'rook', player: 'green' },
-  '2-1': { type: 'cannon', player: 'green' },
-  '2-7': { type: 'cannon', player: 'green' },
-  '3-0': { type: 'pawn', player: 'green' },
-  '3-2': { type: 'pawn', player: 'green' },
-  '3-4': { type: 'pawn', player: 'green' },
-  '3-6': { type: 'pawn', player: 'green' },
-  '3-8': { type: 'pawn', player: 'green' },
+const createInitialBoard = (): BoardState => {
+  const board: BoardState = Array(POINTS_ROWS)
+    .fill(null)
+    .map(() => Array(POINTS_COLS).fill(null));
 
-  '9-0': { type: 'rook', player: 'red' },
-  '9-1': { type: 'horse', player: 'red' },
-  '9-2': { type: 'elephant', player: 'red' },
-  '9-3': { type: 'advisor', player: 'red' },
-  '8-4': { type: 'king', player: 'red' },
-  '9-5': { type: 'advisor', player: 'red' },
-  '9-6': { type: 'elephant', player: 'red' },
-  '9-7': { type: 'horse', player: 'red' },
-  '9-8': { type: 'rook', player: 'red' },
-  '7-1': { type: 'cannon', player: 'red' },
-  '7-7': { type: 'cannon', player: 'red' },
-  '6-0': { type: 'pawn', player: 'red' },
-  '6-2': { type: 'pawn', player: 'red' },
-  '6-4': { type: 'pawn', player: 'red' },
-  '6-6': { type: 'pawn', player: 'red' },
-  '6-8': { type: 'pawn', player: 'red' },
+  // HAN 진영
+  board[0][0] = { type: 'CHA', player: 'HAN' };
+  board[0][1] = { type: 'MA', player: 'HAN' };
+  board[0][2] = { type: 'SANG', player: 'HAN' };
+  board[0][3] = { type: 'SA', player: 'HAN' };
+  board[0][4] = { type: 'GUNG', player: 'HAN' };
+  board[0][5] = { type: 'SA', player: 'HAN' };
+  board[0][6] = { type: 'SANG', player: 'HAN' };
+  board[0][7] = { type: 'MA', player: 'HAN' };
+  board[0][8] = { type: 'CHA', player: 'HAN' };
+  board[2][1] = { type: 'PO', player: 'HAN' };
+  board[2][7] = { type: 'PO', player: 'HAN' };
+  board[3][0] = { type: 'JOL', player: 'HAN' };
+  board[3][2] = { type: 'JOL', player: 'HAN' };
+  board[3][4] = { type: 'JOL', player: 'HAN' };
+  board[3][6] = { type: 'JOL', player: 'HAN' };
+  board[3][8] = { type: 'JOL', player: 'HAN' };
+
+  // CHO 진영
+  board[9][0] = { type: 'CHA', player: 'CHO' };
+  board[9][1] = { type: 'MA', player: 'CHO' };
+  board[9][2] = { type: 'SANG', player: 'CHO' };
+  board[9][3] = { type: 'SA', player: 'CHO' };
+  board[9][4] = { type: 'GUNG', player: 'CHO' };
+  board[9][5] = { type: 'SA', player: 'CHO' };
+  board[9][6] = { type: 'SANG', player: 'CHO' };
+  board[9][7] = { type: 'MA', player: 'CHO' };
+  board[9][8] = { type: 'CHA', player: 'CHO' };
+  board[7][1] = { type: 'PO', player: 'CHO' };
+  board[7][7] = { type: 'PO', player: 'CHO' };
+  board[6][0] = { type: 'JOL', player: 'CHO' };
+  board[6][2] = { type: 'JOL', player: 'CHO' };
+  board[6][4] = { type: 'JOL', player: 'CHO' };
+  board[6][6] = { type: 'JOL', player: 'CHO' };
+  board[6][8] = { type: 'JOL', player: 'CHO' };
+
+  return board;
 };
 
 const ChessBoard = () => {
-  const [pieces, setPieces] = useState<BoardState>(initialBoard);
+  const [pieces, setPieces] = useState<BoardState>(createInitialBoard);
   return (
     <div className="chess-board-wrapper">
       {/* 선을 그리는 레이어 */}
@@ -108,10 +116,10 @@ const ChessBoard = () => {
               }}
             >
               <div className="point"></div>
-              {pieces[`${row}-${col}`] && (
+              {pieces[row][col] && (
                 <Piece
-                  type={pieces[`${row}-${col}`].type}
-                  player={pieces[`${row}-${col}`].player}
+                  type={pieces[row][col]!.type}
+                  player={pieces[row][col]!.player}
                   onClick={() => console.log(`Clicked piece at ${row}-${col}`)}
                 />
               )}

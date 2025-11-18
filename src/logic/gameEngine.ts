@@ -106,30 +106,80 @@ export class GameEngine {
     //
     // TODO: 모든 기물의 이동 규칙 (멱, 궁성, ... )을 여기에 구현해야 합니다.
     //
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const adx = Math.abs(dx);
+    const ady = Math.abs(dy);
+
     switch (piece.type) {
-      case 'JOL': // '졸'의 규칙 (간단한 예시)
-        // '초'의 졸은 위(y-1)로, '한'의 졸은 아래(y+1)로만 간다고 가정
-        if (piece.player === 'CHO') {
-          return from.y - 1 === to.y && from.x === to.x; // 위로 한 칸
-        } else {
-          // '한'
-          return from.y + 1 === to.y && from.x === to.x; // 아래로 한 칸
-        }
+      case 'JOL':
+        const direction = piece.player === 'CHO' ? -1 : 1;
+        return dy === direction && dx === 0;
       
-      // (TODO: 여기에 'CHA', 'MA', 'SANG' 등의 모든 규칙을 추가해야 합니다)
       case 'CHA':
+        return (dx === 0 || dy === 0) && this.isPathClear(from, to);
+      
       case 'MA':
+        return ((adx === 1 && ady === 2) || (adx === 2 && ady === 1)) && 
+               this.board[from.y + (ady === 2 ? (dy > 0 ? 1 : -1) : 0)][from.x + (adx === 2 ? (dx > 0 ? 1 : -1) : 0)] === null;
+      
       case 'SANG':
+        return adx === 3 && ady === 2 && 
+               this.board[from.y + (dy > 0 ? 1 : -1)][from.x + (dx > 0 ? 1 : -1)] === null &&
+               this.board[from.y + (dy > 0 ? 1 : -1)][from.x + (dx > 0 ? 2 : -2)] === null;
+      
       case 'PO':
+        return (dx === 0 || dy === 0) && this.countPiecesInPath(from, to) === 1 && this.board[to.y][to.x] !== null;
+      
       case 'SA':
+        return this.isInPalace(to) && ((adx === 1 && ady === 1) || (from.x === 4 && to.x === 4 && ady === 1));
+      
       case 'GUNG':
-        // 다른 기물들은 일단 true를 반환하게 해서 테스트할 수 있게 합시다.
-        console.log(`[${piece.type}]의 이동 규칙 검증은 (아직) 통과되었습니다.`);
-        return true;
+        return this.isInPalace(to) && adx <= 1 && ady <= 1 && (adx + ady > 0);
 
       default:
-        return false; // 알 수 없는 기물
+        return false;
     }
+  }
+
+  private isPathClear(from: Position, to: Position): boolean {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const stepX = dx === 0 ? 0 : dx > 0 ? 1 : -1;
+    const stepY = dy === 0 ? 0 : dy > 0 ? 1 : -1;
+    
+    let x = from.x + stepX;
+    let y = from.y + stepY;
+    
+    while (x !== to.x || y !== to.y) {
+      if (this.board[y][x] !== null) return false;
+      x += stepX;
+      y += stepY;
+    }
+    return true;
+  }
+
+  private countPiecesInPath(from: Position, to: Position): number {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const stepX = dx === 0 ? 0 : dx > 0 ? 1 : -1;
+    const stepY = dy === 0 ? 0 : dy > 0 ? 1 : -1;
+    
+    let count = 0;
+    let x = from.x + stepX;
+    let y = from.y + stepY;
+    
+    while (x !== to.x || y !== to.y) {
+      if (this.board[y][x] !== null) count++;
+      x += stepX;
+      y += stepY;
+    }
+    return count;
+  }
+
+  private isInPalace(pos: Position): boolean {
+    return pos.x >= 3 && pos.x <= 5 && 
+           ((pos.y >= 0 && pos.y <= 2) || (pos.y >= 7 && pos.y <= 9));
   }
 
   /**

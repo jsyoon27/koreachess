@@ -15,13 +15,13 @@
   z-index: 10;
 }
 
-.piece.red {
+.piece.CHO {
   background-color: #ffebee;
   color: #d32f2f;
   border-color: #d32f2f;
 }
 
-.piece.green {
+.piece.HAN {
   background-color: #e8f5e8;
   color: #2e7d32;
   border-color: #2e7d32;
