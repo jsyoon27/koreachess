@@ -1,5 +1,5 @@
 // src/components/ChessBoard.tsx
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './ChessBoard.css';
 import Piece, { type PieceType, type Player } from './Piece';
 
@@ -13,6 +13,12 @@ interface PiecePosition {
 
 type BoardState = (PiecePosition | null)[][];
 
+interface ChessBoardProps {
+  currentTurn: '한' | '초';
+  onTurnChange: (turn: '한' | '초') => void;
+  onGameEnd: (winner: '한' | '초') => void;
+}
+
 const createInitialBoard = (): BoardState => {
   const board: BoardState = Array(POINTS_ROWS)
     .fill(null)
@@ -23,7 +29,7 @@ const createInitialBoard = (): BoardState => {
   board[0][1] = { type: 'MA', player: 'HAN' };
   board[0][2] = { type: 'SANG', player: 'HAN' };
   board[0][3] = { type: 'SA', player: 'HAN' };
-  board[0][4] = { type: 'GUNG', player: 'HAN' };
+  board[1][4] = { type: 'GUNG', player: 'HAN' };
   board[0][5] = { type: 'SA', player: 'HAN' };
   board[0][6] = { type: 'SANG', player: 'HAN' };
   board[0][7] = { type: 'MA', player: 'HAN' };
@@ -41,7 +47,7 @@ const createInitialBoard = (): BoardState => {
   board[9][1] = { type: 'MA', player: 'CHO' };
   board[9][2] = { type: 'SANG', player: 'CHO' };
   board[9][3] = { type: 'SA', player: 'CHO' };
-  board[9][4] = { type: 'GUNG', player: 'CHO' };
+  board[8][4] = { type: 'GUNG', player: 'CHO' };
   board[9][5] = { type: 'SA', player: 'CHO' };
   board[9][6] = { type: 'SANG', player: 'CHO' };
   board[9][7] = { type: 'MA', player: 'CHO' };
@@ -57,8 +63,8 @@ const createInitialBoard = (): BoardState => {
   return board;
 };
 
-const ChessBoard = () => {
-  const [pieces, setPieces] = useState<BoardState>(createInitialBoard);
+const ChessBoard = ({ currentTurn: _currentTurn, onTurnChange: _onTurnChange, onGameEnd: _onGameEnd }: ChessBoardProps) => {
+  const [pieces, setPieces] = useState<BoardState>(createInitialBoard());
   return (
     <div className="chess-board-wrapper">
       {/* 선을 그리는 레이어 */}

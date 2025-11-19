@@ -1,0 +1,17 @@
+.game-result {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.winner-message {
+  font-size: 32px;
+  font-weight: bold;
+}

@@ -13,7 +13,7 @@ interface PieceProps {
 
 const pieceSymbols = {
   HAN: {
-    GUNG: '將',
+    GUNG: '',
     SA: '士',
     SANG: '象',
     MA: '馬',
