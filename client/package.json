@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nestjs/mapped-types": "*",
+    "@nestjs/typeorm": "^11.0.0",
+    "mysql2": "^3.15.3",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
