@@ -1,56 +1,21 @@
-// src/components/ChessBoard.tsx
 import { useState } from 'react';
 import './ChessBoard.css';
-import Piece, { type PieceType, type Player } from './Piece';
+import Piece from './Piece';
+import { GameEngine } from '../logic/gameEngine';
 
 const POINTS_ROWS = 10;
 const POINTS_COLS = 9;
 
-interface PiecePosition {
-  type: PieceType;
-  player: Player;
-}
-
-type BoardState = { [key: string]: PiecePosition };
-
-const initialBoard: BoardState = {
-  '0-0': { type: 'rook', player: 'green' },
-  '0-1': { type: 'horse', player: 'green' },
-  '0-2': { type: 'elephant', player: 'green' },
-  '0-3': { type: 'advisor', player: 'green' },
-  '1-4': { type: 'king', player: 'green' },
-  '0-5': { type: 'advisor', player: 'green' },
-  '0-6': { type: 'elephant', player: 'green' },
-  '0-7': { type: 'horse', player: 'green' },
-  '0-8': { type: 'rook', player: 'green' },
-  '2-1': { type: 'cannon', player: 'green' },
-  '2-7': { type: 'cannon', player: 'green' },
-  '3-0': { type: 'pawn', player: 'green' },
-  '3-2': { type: 'pawn', player: 'green' },
-  '3-4': { type: 'pawn', player: 'green' },
-  '3-6': { type: 'pawn', player: 'green' },
-  '3-8': { type: 'pawn', player: 'green' },
-
-  '9-0': { type: 'rook', player: 'red' },
-  '9-1': { type: 'horse', player: 'red' },
-  '9-2': { type: 'elephant', player: 'red' },
-  '9-3': { type: 'advisor', player: 'red' },
-  '8-4': { type: 'king', player: 'red' },
-  '9-5': { type: 'advisor', player: 'red' },
-  '9-6': { type: 'elephant', player: 'red' },
-  '9-7': { type: 'horse', player: 'red' },
-  '9-8': { type: 'rook', player: 'red' },
-  '7-1': { type: 'cannon', player: 'red' },
-  '7-7': { type: 'cannon', player: 'red' },
-  '6-0': { type: 'pawn', player: 'red' },
-  '6-2': { type: 'pawn', player: 'red' },
-  '6-4': { type: 'pawn', player: 'red' },
-  '6-6': { type: 'pawn', player: 'red' },
-  '6-8': { type: 'pawn', player: 'red' },
-};
-
 const ChessBoard = () => {
-  const [pieces, setPieces] = useState<BoardState>(initialBoard);
+  const [engine] = useState(() => new GameEngine());
+  const [gameState, setGameState] = useState(engine.getGameState());
+
+  const handleMove = (from: { y: number; x: number }, to: { y: number; x: number }) => {
+    if (engine.tryMove(from, to)) {
+      setGameState(engine.getGameState());
+    }
+  };
+
   return (
     <div className="chess-board-wrapper">
       {/* 선을 그리는 레이어 */}
@@ -106,17 +71,17 @@ const ChessBoard = () => {
                 top: `${25 + row * 50}px`,
                 transform: 'translate(-50%, -50%)',
               }}
+              onClick={() => handleMove({ y: row, x: col }, { y: row, x: col })}
             >
               <div className="point"></div>
-              {pieces[`${row}-${col}`] && (
+              {gameState.board[row][col] && (
                 <Piece
-                  type={pieces[`${row}-${col}`].type}
-                  player={pieces[`${row}-${col}`].player}
-                  onClick={() => console.log(`Clicked piece at ${row}-${col}`)}
+                  type={gameState.board[row][col]!.type}
+                  player={gameState.board[row][col]!.player}
                 />
               )}
             </div>
-          )),
+          ))
         )}
       </div>
     </div>
