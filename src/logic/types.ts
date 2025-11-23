@@ -1,6 +1,6 @@
 // src/logic/types.ts
 
-// '초' 또는 '한'
+// 'CHO' 또는 'HAN'
 export type Player = 'CHO' | 'HAN';
 
 // 기물의 종류 (임시로 간단하게)

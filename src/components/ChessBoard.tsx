@@ -9,7 +9,12 @@ const POINTS_COLS = 9;
 const ChessBoard = () => {
   const [engine] = useState(() => new GameEngine());
   const [gameState, setGameState] = useState(engine.getGameState());
-
+// const ChessBoard = ({
+//   currentTurn: _currentTurn,
+//   onTurnChange: _onTurnChange,
+//   onGameEnd: _onGameEnd,
+// }: ChessBoardProps) => {
+//   const [pieces, setPieces] = useState<BoardState>(createInitialBoard());
   const handleMove = (from: { y: number; x: number }, to: { y: number; x: number }) => {
     if (engine.tryMove(from, to)) {
       setGameState(engine.getGameState());

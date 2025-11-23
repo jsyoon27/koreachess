@@ -1,0 +1,31 @@
+.StatusContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.Status {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.reset-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reset-btn:hover {
+  background-color: #45a049;
+}

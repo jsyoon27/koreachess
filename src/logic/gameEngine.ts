@@ -72,6 +72,11 @@ export class GameEngine {
       case 'PO':
         return isPoMoveLegal(this.board, from, to);
       case 'SA':
+        return (
+          this.isInPalace(to) &&
+          ((adx === 1 && ady === 1) || (from.x === 4 && to.x === 4 && ady === 1))
+        );
+
       case 'GUNG':
         return isSaGungMoveLegal(this.board, from, to, piece.player);
     }

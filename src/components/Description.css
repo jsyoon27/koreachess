@@ -1,0 +1,25 @@
+.description {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.description h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  color: #333;
+}
+
+.description ul {
+  margin: 0;
+  padding-left: 0;
+  line-height: 1.6;
+  list-style-position: inside;
+}
+
+.description li {
+  margin-bottom: 8px;
+  color: #555;
+}
