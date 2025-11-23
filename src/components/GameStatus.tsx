@@ -2,7 +2,7 @@ import React from 'react';
 import './GameStatus.css';
 
 type Props = {
-  currentPlayer: 'HAN' | 'CHO';
+  currentPlayer: 'CHO' | 'HAN';
   onNewGame: () => void;
 };
 

@@ -9,35 +9,64 @@ import { isPoMoveLegal } from './rules/po';
 export class GameEngine {
   private board: GameBoard;
   private currentPlayer: Player;
+  private winner: Player | null;
 
   constructor() {
     this.board = this.createInitialBoard(); // 게임판 초기화
     this.currentPlayer = 'CHO'; // '초'가 항상 선공
+    this.winner = null;
   }
 
   public getGameState() {
     return {
       board: this.board,
       currentPlayer: this.currentPlayer,
+      winner: this.winner,
     };
   }
 
-  public tryMove(from: Position, to: Position): boolean {
+  public tryMove(from: Position, to: Position): { success: boolean; winner: Player | null } {
+    if (this.winner) {
+      return { success: false, winner: this.winner };
+    }
+
     if (!this.isMoveLegal(from, to)) {
-      return false;
+      return { success: false, winner: this.winner };
     }
 
     const pieceToMove = this.board[from.y][from.x];
     const targetPiece = this.board[to.y][to.x];
     if (targetPiece) {
-      console.log(`${targetPiece.player}의 ${targetPiece.type}을(를) 잡았습니다.`);
+      console.log(`${targetPiece.player}의 ${targetPiece.type}을(를) 잡았습니다`);
     }
 
     this.board[to.y][to.x] = pieceToMove;
     this.board[from.y][from.x] = null;
 
+    if (targetPiece?.type === 'GUNG' && pieceToMove) {
+      this.winner = pieceToMove.player;
+      return { success: true, winner: this.winner };
+    }
+
     this.switchTurn();
-    return true;
+    return { success: true, winner: this.winner };
+  }
+
+  public getLegalMoves(from: Position): Position[] {
+    const piece = this.board[from.y][from.x];
+    if (!piece || piece.player !== this.currentPlayer || this.winner) {
+      return [];
+    }
+
+    const moves: Position[] = [];
+    for (let y = 0; y < this.board.length; y++) {
+      for (let x = 0; x < this.board[y].length; x++) {
+        if (this.isMoveLegal(from, { y, x })) {
+          moves.push({ y, x });
+        }
+      }
+    }
+    return moves;
   }
 
   private switchTurn() {
@@ -46,6 +75,10 @@ export class GameEngine {
   }
 
   private isMoveLegal(from: Position, to: Position): boolean {
+    if (this.winner) {
+      return false;
+    }
+
     const piece = this.board[from.y][from.x];
     if (!piece) {
       return false;
@@ -72,11 +105,6 @@ export class GameEngine {
       case 'PO':
         return isPoMoveLegal(this.board, from, to);
       case 'SA':
-        return (
-          this.isInPalace(to) &&
-          ((adx === 1 && ady === 1) || (from.x === 4 && to.x === 4 && ady === 1))
-        );
-
       case 'GUNG':
         return isSaGungMoveLegal(this.board, from, to, piece.player);
     }

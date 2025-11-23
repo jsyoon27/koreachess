@@ -7,12 +7,12 @@ import GameResult from './components/GameResult';
 import Description from './components/Description';
 
 function App() {
-  const [currentTurn, setCurrentTurn] = useState<'HAN' | 'CHO'>('HAN');
+  const [currentTurn, setCurrentTurn] = useState<'HAN' | 'CHO'>('CHO');
   const [gameKey, setGameKey] = useState(0);
   const [winner, setWinner] = useState<'HAN' | 'CHO' | null>(null);
 
   const handleNewGame = () => {
-    setCurrentTurn('HAN');
+    setCurrentTurn('CHO');
     setWinner(null);
     setGameKey((prev) => prev + 1);
   };

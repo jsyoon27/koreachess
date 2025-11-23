@@ -2,7 +2,7 @@ import React from 'react';
 import './GameResult.css';
 
 interface GameResultProps {
-  winner: 'HAN' | 'CHO' | null;
+  winner: 'CHO' | 'HAN' | null;
 }
 
 const GameResult: React.FC<GameResultProps> = ({ winner }) => {
