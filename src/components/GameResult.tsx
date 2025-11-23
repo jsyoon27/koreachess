@@ -2,7 +2,7 @@ import React from 'react';
 import './GameResult.css';
 
 interface GameResultProps {
-  winner: '한' | '초' | null;
+  winner: 'HAN' | 'CHO' | null;
 }
 
 const GameResult: React.FC<GameResultProps> = ({ winner }) => {
@@ -10,9 +10,7 @@ const GameResult: React.FC<GameResultProps> = ({ winner }) => {
 
   return (
     <div className="game-result">
-      <div className="winner-message">
-        {winner} 승리!
-      </div>
+      <div className="winner-message">{winner} 승리!</div>
     </div>
   );
 };

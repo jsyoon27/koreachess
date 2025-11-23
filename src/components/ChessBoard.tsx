@@ -1,5 +1,5 @@
 // src/components/ChessBoard.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './ChessBoard.css';
 import Piece, { type PieceType, type Player } from './Piece';
 
@@ -14,9 +14,9 @@ interface PiecePosition {
 type BoardState = (PiecePosition | null)[][];
 
 interface ChessBoardProps {
-  currentTurn: '한' | '초';
-  onTurnChange: (turn: '한' | '초') => void;
-  onGameEnd: (winner: '한' | '초') => void;
+  currentTurn: 'HAN' | 'CHO';
+  onTurnChange: (turn: 'HAN' | 'CHO') => void;
+  onGameEnd: (winner: 'HAN' | 'CHO') => void;
 }
 
 const createInitialBoard = (): BoardState => {
@@ -63,7 +63,11 @@ const createInitialBoard = (): BoardState => {
   return board;
 };
 
-const ChessBoard = ({ currentTurn: _currentTurn, onTurnChange: _onTurnChange, onGameEnd: _onGameEnd }: ChessBoardProps) => {
+const ChessBoard = ({
+  currentTurn: _currentTurn,
+  onTurnChange: _onTurnChange,
+  onGameEnd: _onGameEnd,
+}: ChessBoardProps) => {
   const [pieces, setPieces] = useState<BoardState>(createInitialBoard());
   return (
     <div className="chess-board-wrapper">

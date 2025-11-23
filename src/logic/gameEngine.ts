@@ -13,7 +13,7 @@ export class GameEngine {
 
   constructor() {
     this.board = this.initializeBoard(); // 게임판 초기화
-    this.currentPlayer = 'CHO'; // '초'가 항상 선공
+    this.currentPlayer = 'HAN'; // 'HAN'이 항상 선공
   }
 
   /**
@@ -115,27 +115,41 @@ export class GameEngine {
       case 'JOL':
         const direction = piece.player === 'CHO' ? -1 : 1;
         return dy === direction && dx === 0;
-      
+
       case 'CHA':
         return (dx === 0 || dy === 0) && this.isPathClear(from, to);
-      
+
       case 'MA':
-        return ((adx === 1 && ady === 2) || (adx === 2 && ady === 1)) && 
-               this.board[from.y + (ady === 2 ? (dy > 0 ? 1 : -1) : 0)][from.x + (adx === 2 ? (dx > 0 ? 1 : -1) : 0)] === null;
-      
+        return (
+          ((adx === 1 && ady === 2) || (adx === 2 && ady === 1)) &&
+          this.board[from.y + (ady === 2 ? (dy > 0 ? 1 : -1) : 0)][
+            from.x + (adx === 2 ? (dx > 0 ? 1 : -1) : 0)
+          ] === null
+        );
+
       case 'SANG':
-        return adx === 3 && ady === 2 && 
-               this.board[from.y + (dy > 0 ? 1 : -1)][from.x + (dx > 0 ? 1 : -1)] === null &&
-               this.board[from.y + (dy > 0 ? 1 : -1)][from.x + (dx > 0 ? 2 : -2)] === null;
-      
+        return (
+          adx === 3 &&
+          ady === 2 &&
+          this.board[from.y + (dy > 0 ? 1 : -1)][from.x + (dx > 0 ? 1 : -1)] === null &&
+          this.board[from.y + (dy > 0 ? 1 : -1)][from.x + (dx > 0 ? 2 : -2)] === null
+        );
+
       case 'PO':
-        return (dx === 0 || dy === 0) && this.countPiecesInPath(from, to) === 1 && this.board[to.y][to.x] !== null;
-      
+        return (
+          (dx === 0 || dy === 0) &&
+          this.countPiecesInPath(from, to) === 1 &&
+          this.board[to.y][to.x] !== null
+        );
+
       case 'SA':
-        return this.isInPalace(to) && ((adx === 1 && ady === 1) || (from.x === 4 && to.x === 4 && ady === 1));
-      
+        return (
+          this.isInPalace(to) &&
+          ((adx === 1 && ady === 1) || (from.x === 4 && to.x === 4 && ady === 1))
+        );
+
       case 'GUNG':
-        return this.isInPalace(to) && adx <= 1 && ady <= 1 && (adx + ady > 0);
+        return this.isInPalace(to) && adx <= 1 && ady <= 1 && adx + ady > 0;
 
       default:
         return false;
@@ -147,10 +161,10 @@ export class GameEngine {
     const dy = to.y - from.y;
     const stepX = dx === 0 ? 0 : dx > 0 ? 1 : -1;
     const stepY = dy === 0 ? 0 : dy > 0 ? 1 : -1;
-    
+
     let x = from.x + stepX;
     let y = from.y + stepY;
-    
+
     while (x !== to.x || y !== to.y) {
       if (this.board[y][x] !== null) return false;
       x += stepX;
@@ -164,11 +178,11 @@ export class GameEngine {
     const dy = to.y - from.y;
     const stepX = dx === 0 ? 0 : dx > 0 ? 1 : -1;
     const stepY = dy === 0 ? 0 : dy > 0 ? 1 : -1;
-    
+
     let count = 0;
     let x = from.x + stepX;
     let y = from.y + stepY;
-    
+
     while (x !== to.x || y !== to.y) {
       if (this.board[y][x] !== null) count++;
       x += stepX;
@@ -178,8 +192,7 @@ export class GameEngine {
   }
 
   private isInPalace(pos: Position): boolean {
-    return pos.x >= 3 && pos.x <= 5 && 
-           ((pos.y >= 0 && pos.y <= 2) || (pos.y >= 7 && pos.y <= 9));
+    return pos.x >= 3 && pos.x <= 5 && ((pos.y >= 0 && pos.y <= 2) || (pos.y >= 7 && pos.y <= 9));
   }
 
   /**
@@ -195,7 +208,7 @@ export class GameEngine {
     // 기물 생성을 위한 헬퍼 함수
     const P = (player: Player, type: PieceType): Piece => ({ player, type });
 
-    // --- '한' (Red) 기물 배치 (상단) ---
+    // --- 'HAN' (Red) 기물 배치 (상단) ---
     board[0][0] = P('HAN', 'CHA');
     board[0][1] = P('HAN', 'MA');
     board[0][2] = P('HAN', 'SANG');
@@ -215,7 +228,7 @@ export class GameEngine {
     board[3][6] = P('HAN', 'JOL');
     board[3][8] = P('HAN', 'JOL');
 
-    // --- '초' (Green) 기물 배치 (하단) ---
+    // --- 'CHO' (Green) 기물 배치 (하단) ---
     board[9][0] = P('CHO', 'CHA');
     board[9][1] = P('CHO', 'MA');
     board[9][2] = P('CHO', 'SANG');

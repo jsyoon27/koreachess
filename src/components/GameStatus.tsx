@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './GameStatus.css';
 
 type Props = {
-  currentPlayer: '한' | '초';
+  currentPlayer: 'HAN' | 'CHO';
   onNewGame: () => void;
 };
 
