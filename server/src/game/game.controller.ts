@@ -14,17 +14,17 @@ import { GameService } from './game.service';
 export class GameController {
   constructor(private readonly gameService: GameService) {}
 
-  @Post('log') // POST /games/log
+  @Post('log')
   create(@Body() body: any) {
     return this.gameService.create(body);
   }
 
-  @Get(':id/log') // GET /games/:id/log?playerId=...
+  @Get(':id/log')
   findOne(@Param('id') id: string, @Query('playerId') playerId?: string) {
     return this.gameService.findByGameId(id, playerId);
   }
 
-  @Delete(':id/log') // DELETE /games/:id/log?playerId=...
+  @Delete(':id/log')
   remove(@Param('id') id: string, @Query('playerId') playerId?: string) {
     return this.gameService.deleteByGameId(id, playerId);
   }

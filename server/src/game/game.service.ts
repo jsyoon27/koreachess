@@ -21,7 +21,7 @@ export class GameService {
     return await this.gameRepository.find();
   }
 
-  // 특정 게임 기보 조회 (playerId 있으면 필터)
+  // (기보 playerId 필터)
   async findByGameId(gameId: string, playerId?: string) {
     const where: FindOptionsWhere<Game> = { gameId };
     if (playerId) {
