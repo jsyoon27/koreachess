@@ -80,18 +80,15 @@ function App() {
     }
   };
 
-  const deleteLogs = async (player?: Player) => {
-    const confirmText = player
-      ? `${player} 로그를 모두 삭제할까요?`
-      : '전체 로그를 모두 삭제할까요?';
+  const deleteLogs = async () => {
+    const confirmText = '전체 로그를 모두 삭제할까요?';
     if (!window.confirm(confirmText)) return;
 
     setLogsLoading(true);
     setLogsError(null);
     setLogStatus(null);
-    const query = player ? `?playerId=${playerIds[player]}` : '';
     try {
-      const res = await fetch(`${API_URL}/${GAME_ID}/log${query}`, { method: 'DELETE' });
+      const res = await fetch(`${API_URL}/${GAME_ID}/log`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`status ${res.status}`);
       setLogs([]);
       setLogStatus('삭제했습니다.');
@@ -205,8 +202,6 @@ function App() {
             <button onClick={() => loadHistory('HAN')}>한</button>
             <button onClick={() => loadHistory('CHO')}>초</button>
             <button onClick={() => deleteLogs()}>전체 삭제</button>
-            <button onClick={() => deleteLogs('HAN')}>한 삭제</button>
-            <button onClick={() => deleteLogs('CHO')}>초 삭제</button>
           </div>
         </div>
         {logsLoading && <div className="log-status">불러오는 중...</div>}

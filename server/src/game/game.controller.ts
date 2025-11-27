@@ -1,5 +1,13 @@
 ﻿// server/src/game/game.controller.ts
-import { Controller, Get, Post, Body, Param, Query, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  Delete,
+} from '@nestjs/common';
 import { GameService } from './game.service';
 
 @Controller('games') // 주소: http://localhost:3000/games
