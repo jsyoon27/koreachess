@@ -1,8 +1,8 @@
-// server/src/game/game.service.ts
+﻿// server/src/game/game.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Game } from './entities/game.entity'; // (파일명 확인 필요)
+import { Repository, FindOptionsWhere } from 'typeorm';
+import { Game } from './entities/game.entity';
 
 @Injectable()
 export class GameService {
@@ -11,7 +11,7 @@ export class GameService {
     private gameRepository: Repository<Game>,
   ) {}
 
-  // 기보 저장 (Create)
+  // 기보 저장(Create)
   async create(createGameDto: any) {
     return await this.gameRepository.save(createGameDto);
   }
@@ -21,11 +21,15 @@ export class GameService {
     return await this.gameRepository.find();
   }
 
-  // 특정 게임 기보 조회
-  async findByGameId(gameId: string) {
+  // 특정 게임 기보 조회 (playerId 있으면 필터)
+  async findByGameId(gameId: string, playerId?: string) {
+    const where: FindOptionsWhere<Game> = { gameId };
+    if (playerId) {
+      where.playerId = playerId;
+    }
     return await this.gameRepository.find({
-        where: { gameId },
-        order: { createdAt: 'ASC' } // 순서대로
+      where,
+      order: { createdAt: 'ASC' },
     });
   }
 }

@@ -1,4 +1,4 @@
-.StatusContainer {
+﻿.StatusContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,19 +13,44 @@
   font-size: 18px;
 }
 
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.reset-btn,
+.undo-btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .reset-btn {
   background-color: #4caf50;
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .reset-btn:hover {
   background-color: #45a049;
+}
+
+.undo-btn {
+  background: #e0e3ea;
+  color: #1a1d27;
+}
+
+.undo-btn:disabled {
+  background: #f0f2f6;
+  color: #9aa0ae;
+  cursor: not-allowed;
+}
+
+.undo-btn:not(:disabled):hover {
+  background: #cfd5e2;
 }

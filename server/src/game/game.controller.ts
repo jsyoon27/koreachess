@@ -1,5 +1,5 @@
-// server/src/game/game.controller.ts
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+﻿// server/src/game/game.controller.ts
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { GameService } from './game.service';
 
 @Controller('games') // 주소: http://localhost:3000/games
@@ -11,8 +11,8 @@ export class GameController {
     return this.gameService.create(body);
   }
 
-  @Get(':id/log') // GET /games/1/log
-  findOne(@Param('id') id: string) {
-    return this.gameService.findByGameId(id);
+  @Get(':id/log') // GET /games/:id/log?playerId=...
+  findOne(@Param('id') id: string, @Query('playerId') playerId?: string) {
+    return this.gameService.findByGameId(id, playerId);
   }
 }

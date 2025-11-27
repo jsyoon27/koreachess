@@ -1,4 +1,4 @@
-import type { Player, Position, GameBoard } from './types';
+﻿import type { Player, Position, GameBoard } from './types';
 import { isChaMoveLegal } from './rules/cha';
 import { isSaGungMoveLegal } from './rules/saGung';
 import { isJolMoveLegal } from './rules/jol';
@@ -6,14 +6,20 @@ import { isMaMoveLegal } from './rules/ma';
 import { isSangMoveLegal } from './rules/sang';
 import { isPoMoveLegal } from './rules/po';
 
+export type GameSnapshot = {
+  board: GameBoard;
+  currentPlayer: Player;
+  winner: Player | null;
+};
+
 export class GameEngine {
   private board: GameBoard;
   private currentPlayer: Player;
   private winner: Player | null;
 
   constructor() {
-    this.board = this.createInitialBoard(); // 게임판 초기화
-    this.currentPlayer = 'CHO'; // '초'가 항상 선공
+    this.board = this.createInitialBoard();
+    this.currentPlayer = 'CHO';
     this.winner = null;
   }
 
@@ -23,6 +29,20 @@ export class GameEngine {
       currentPlayer: this.currentPlayer,
       winner: this.winner,
     };
+  }
+
+  public getSnapshot(): GameSnapshot {
+    return {
+      board: this.cloneBoard(this.board),
+      currentPlayer: this.currentPlayer,
+      winner: this.winner,
+    };
+  }
+
+  public restoreSnapshot(snapshot: GameSnapshot) {
+    this.board = this.cloneBoard(snapshot.board);
+    this.currentPlayer = snapshot.currentPlayer;
+    this.winner = snapshot.winner;
   }
 
   public tryMove(from: Position, to: Position): { success: boolean; winner: Player | null } {
@@ -37,7 +57,7 @@ export class GameEngine {
     const pieceToMove = this.board[from.y][from.x];
     const targetPiece = this.board[to.y][to.x];
     if (targetPiece) {
-      console.log(`${targetPiece.player}의 ${targetPiece.type}을(를) 잡았습니다`);
+      console.log(`${targetPiece.player} ${targetPiece.type} captured.`);
     }
 
     this.board[to.y][to.x] = pieceToMove;
@@ -71,7 +91,7 @@ export class GameEngine {
 
   private switchTurn() {
     this.currentPlayer = this.currentPlayer === 'CHO' ? 'HAN' : 'CHO';
-    console.log(`이제 ${this.currentPlayer}의 턴입니다.`);
+    console.log(`턴: ${this.currentPlayer}`);
   }
 
   private isMoveLegal(from: Position, to: Position): boolean {
@@ -116,7 +136,7 @@ export class GameEngine {
       .fill(null)
       .map(() => Array(9).fill(null));
 
-    // HAN 진영
+    // HAN side
     board[0][0] = { type: 'CHA', player: 'HAN' };
     board[0][1] = { type: 'MA', player: 'HAN' };
     board[0][2] = { type: 'SANG', player: 'HAN' };
@@ -134,7 +154,7 @@ export class GameEngine {
     board[3][6] = { type: 'JOL', player: 'HAN' };
     board[3][8] = { type: 'JOL', player: 'HAN' };
 
-    // CHO 진영
+    // CHO side
     board[9][0] = { type: 'CHA', player: 'CHO' };
     board[9][1] = { type: 'MA', player: 'CHO' };
     board[9][2] = { type: 'SANG', player: 'CHO' };
@@ -153,5 +173,9 @@ export class GameEngine {
     board[6][8] = { type: 'JOL', player: 'CHO' };
 
     return board;
+  }
+
+  private cloneBoard(board: GameBoard): GameBoard {
+    return board.map((row) => row.map((cell) => (cell ? { ...cell } : null)));
   }
 }

@@ -1,56 +1,39 @@
 import { useState } from 'react';
 import './ChessBoard.css';
 import Piece from './Piece';
+import type { GameBoard, Player, Position } from '../logic/types';
 import { GameEngine } from '../logic/gameEngine';
-import type { Position } from '../logic/types';
 
 const POINTS_ROWS = 10;
 const POINTS_COLS = 9;
 
 type ChessBoardProps = {
-  currentTurn: 'CHO' | 'HAN';
-  onTurnChange?: (next: 'CHO' | 'HAN') => void;
-  onGameEnd?: (winner: 'CHO' | 'HAN') => void;
+  engine: GameEngine;
+  board: GameBoard;
+  currentPlayer: Player;
+  winner: Player | null;
+  onMove: (from: Position, to: Position) => boolean;
 };
 
-const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
-  const [engine] = useState(() => new GameEngine());
-  const [gameState, setGameState] = useState(engine.getGameState());
+const ChessBoard = ({ engine, board, currentPlayer, winner, onMove }: ChessBoardProps) => {
   const [selectedFrom, setSelectedFrom] = useState<Position | null>(null);
   const [possibleMoves, setPossibleMoves] = useState<Position[]>([]);
 
-  const handleMove = (from: Position, to: Position) => {
-    const result = engine.tryMove(from, to);
-    if (!result.success) {
-      return false;
-    }
-
-    const nextState = engine.getGameState();
-    setGameState(nextState);
-
-    if (result.winner) {
-      onGameEnd?.(result.winner);
-    } else {
-      onTurnChange?.(nextState.currentPlayer);
-    }
-    return true;
-  };
-
   const handleIntersectionClick = (pos: Position) => {
-    if (gameState.winner) return;
+    if (winner) return;
 
-    const cellPiece = gameState.board[pos.y][pos.x];
+    const cellPiece = board[pos.y][pos.x];
 
-    // 첫 클릭: 현재 턴의 기물을 선택하고 이동 가능 칸 표시
+    // 첫 클릭: 현재 턴 기물 선택
     if (!selectedFrom) {
-      if (cellPiece && cellPiece.player === gameState.currentPlayer) {
+      if (cellPiece && cellPiece.player === currentPlayer) {
         setSelectedFrom(pos);
         setPossibleMoves(engine.getLegalMoves(pos));
       }
       return;
     }
 
-    // 같은 칸을 다시 누르면 선택 해제
+    // 같은 칸 다시 클릭 -> 선택 해제
     if (selectedFrom.x === pos.x && selectedFrom.y === pos.y) {
       setSelectedFrom(null);
       setPossibleMoves([]);
@@ -58,12 +41,12 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
     }
 
     // 이동 시도
-    const moved = handleMove(selectedFrom, pos);
+    const moved = onMove(selectedFrom, pos);
     setSelectedFrom(null);
     setPossibleMoves([]);
 
-    // 이동 실패했고 다른 아군 기물이면 그 기물로 선택 전환
-    if (!moved && cellPiece && cellPiece.player === gameState.currentPlayer) {
+    // 이동 실패 + 현재 턴 기물 -> 새로 선택
+    if (!moved && cellPiece && cellPiece.player === currentPlayer) {
       setSelectedFrom(pos);
       setPossibleMoves(engine.getLegalMoves(pos));
     }
@@ -72,7 +55,7 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
   const getPointClass = (row: number, col: number) => {
     const isSelected = selectedFrom && selectedFrom.y === row && selectedFrom.x === col;
     const isPossible = possibleMoves.some((p) => p.y === row && p.x === col);
-    const target = gameState.board[row][col];
+    const target = board[row][col];
     const isAttack = isPossible && target !== null;
 
     if (isAttack) return 'point attack-move';
@@ -83,10 +66,8 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
 
   return (
     <div className="chess-board-wrapper">
-      {/* 보드 격자 */}
       <div className="chess-lines">
         <svg width="450" height="500">
-          {/* 가로선 */}
           {Array.from({ length: POINTS_ROWS }).map((_, row) => (
             <line
               key={`h-${row}`}
@@ -99,7 +80,6 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
             />
           ))}
 
-          {/* 세로선 */}
           {Array.from({ length: POINTS_COLS }).map((_, col) => (
             <g key={`v-${col}`}>
               <line
@@ -113,7 +93,6 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
             </g>
           ))}
 
-          {/* 궁성 대각선 */}
           <line x1="175" y1="25" x2="275" y2="125" stroke="#8b4513" strokeWidth="2" />
           <line x1="275" y1="25" x2="175" y2="125" stroke="#8b4513" strokeWidth="2" />
           <line x1="175" y1="375" x2="275" y2="475" stroke="#8b4513" strokeWidth="2" />
@@ -121,7 +100,6 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
         </svg>
       </div>
 
-      {/* 교차점과 기물 배치 */}
       <div className="chess-board">
         {Array.from({ length: POINTS_ROWS }).map((_, row) =>
           Array.from({ length: POINTS_COLS }).map((_, col) => (
@@ -139,11 +117,8 @@ const ChessBoard = ({ onTurnChange, onGameEnd }: ChessBoardProps) => {
               onClick={() => handleIntersectionClick({ y: row, x: col })}
             >
               <div className={getPointClass(row, col)}></div>
-              {gameState.board[row][col] && (
-                <Piece
-                  type={gameState.board[row][col]!.type}
-                  player={gameState.board[row][col]!.player}
-                />
+              {board[row][col] && (
+                <Piece type={board[row][col]!.type} player={board[row][col]!.player} />
               )}
             </div>
           ))

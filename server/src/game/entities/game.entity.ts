@@ -1,8 +1,14 @@
 // server/src/game/entities/game.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
-export class Game { // 클래스 이름은 Game 또는 MoveLog 자유입니다
+export class Game {
+  // 클래스 이름은 Game 또는 MoveLog 자유입니다
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -11,6 +17,9 @@ export class Game { // 클래스 이름은 Game 또는 MoveLog 자유입니다
 
   @Column()
   player: string; // 'CHO' or 'HAN'
+
+  @Column({ nullable: true })
+  playerId: string; // 실제 사용자 ID
 
   @Column()
   pieceType: string; // 'CHA', 'JOL'...
