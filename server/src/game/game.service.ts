@@ -32,4 +32,13 @@ export class GameService {
       order: { createdAt: 'ASC' },
     });
   }
+
+  // 로그 삭제 (게임 ID 기준, playerId 있으면 해당 플레이어만)
+  async deleteByGameId(gameId: string, playerId?: string) {
+    const where: FindOptionsWhere<Game> = { gameId };
+    if (playerId) {
+      where.playerId = playerId;
+    }
+    return await this.gameRepository.delete(where);
+  }
 }

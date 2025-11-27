@@ -6,6 +6,13 @@
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -39,4 +46,132 @@
 
 .bg-green-200 {
   background-color: #bbf7d0;
+}
+
+.log-panel {
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.log-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.log-subtitle {
+  font-size: 13px;
+  color: #666;
+}
+
+.log-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.log-actions button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #d0d4dd;
+  background: #f7f8fb;
+  cursor: pointer;
+}
+
+.log-actions button:hover {
+  background: #e8ebf3;
+}
+
+.log-actions button:nth-child(4),
+.log-actions button:nth-child(5),
+.log-actions button:nth-child(6) {
+  background: #ffecec;
+  border-color: #f2b1b1;
+}
+
+.log-actions button:nth-child(4):hover,
+.log-actions button:nth-child(5):hover,
+.log-actions button:nth-child(6):hover {
+  background: #ffd6d6;
+}
+
+.log-list {
+  margin-top: 12px;
+  max-height: 260px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.log-row {
+  padding: 10px 12px;
+  border: 1px solid #e6e8ee;
+  border-radius: 10px;
+  background: #fbfcff;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.log-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #1e3a8a;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge.secondary {
+  background: #475569;
+}
+
+.log-move {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+}
+
+.log-time {
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+}
+
+.log-status {
+  margin-top: 12px;
+  color: #333;
+}
+
+.log-status.error {
+  color: #c0392b;
+}
+
+.log-status.success {
+  color: #1f8b4c;
+}
+
+.log-empty {
+  padding: 12px;
+  text-align: center;
+  color: #888;
 }
